@@ -8,7 +8,7 @@ defmodule AstarteDevTool.MixProject do
       elixir: "~> 1.15",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      escript: [main_module: AstarteDevTool.Commandline.CLI, name: "astarte-dev-tool"]
+      escript: [main_module: AstarteDevTool, name: "astarte-dev-tool"]
     ]
   end
 
