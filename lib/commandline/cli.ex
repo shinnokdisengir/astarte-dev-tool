@@ -14,8 +14,8 @@ defmodule AstarteDevTool.Commandline.CLI do
   defp loop() do
     prompt = """
     Seleziona un'opzione:
-    1. Saluta
-    2. Esci
+    1. Amico
+    2. Dottore
     """
 
     IO.puts(Box.new(prompt, padding: 1))

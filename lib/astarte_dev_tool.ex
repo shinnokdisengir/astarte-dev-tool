@@ -1,21 +1,12 @@
-defmodule AstarteDevTool do
+defmodule AstarteDevTool.Application do
   @moduledoc """
   Documentation for `AstarteDevTool`.
   """
 
-  alias Owl.IO, as: IO
-  alias Owl.Box
+  use Application
 
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> AstarteDevTool.hello()
-      :world
-
-  """
-  def hello do
-    :world
+  def start(_type, args) do
+    AstarteDevTool.Commandline.CLI.main(args)
+    {:ok, self()}
   end
 end
