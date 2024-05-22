@@ -1,0 +1,1 @@
+AstarteDevTool.Commandline.CLI.main([])
