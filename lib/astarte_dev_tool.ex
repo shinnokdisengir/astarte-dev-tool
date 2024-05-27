@@ -1,10 +1,14 @@
 defmodule AstarteDevTool do
+  require Logger
   alias AstarteDevTool.Theme
+  alias AstarteDevTool.Commands
 
+  @pad 8
   @options %{
     idle: [
+      {:config, "Config tool"},
       {:up, "Up Astarte containers detached"},
-      {:down, "Down Astarte containers detached"},
+      # {:down, "Down Astarte containers detached"},
       {:shell, "Open shell"},
       {:exit, "Exit"}
     ],
@@ -22,38 +26,33 @@ defmodule AstarteDevTool do
   }
 
   def main(args) do
-    {opts, _, _} = OptionParser.parse(args, switches: [file: :string], aliases: [f: :file])
-    loop(opts, [:idle])
-    :ok
+    {opts, _, _} = OptionParser.parse(args, switches: [verbose: :boolean], aliases: [v: :verbose])
+    IO.inspect(opts)
+    # Logger.configure(level: :info)
+    loop(opts, [:idle], %{})
   end
 
-  defp loop(opts, [current_state | _] = state) do
+  defp loop(opts, [position | _] = stack, state) do
+    Logger.warning("State: #{inspect(state)}")
+
     {name, _} =
-      Owl.IO.select(@options[current_state],
+      Owl.IO.select(@options[position],
+        label: "Select",
         render_as: fn {name, description} ->
           [
             name
             |> Atom.to_string()
+            |> String.pad_trailing(@pad, " ")
             |> Owl.Data.tag(Theme.color(:primary)),
-            "\n\t",
-            Owl.Data.tag(description, :light_black)
+            description
+            |> Owl.Data.tag(:light_black)
           ]
         end
       )
 
-    op(name, opts, state)
-  end
-
-  defp op(:up, opts, state) do
-    # Do the docker up
-    loop(opts, [:up | state])
-  end
-
-  defp op(:exit, _, _) do
-    :ok
-  end
-
-  defp op(:back, opts, [_ | state]) do
-    loop(opts, state)
+    case Commands.run(name, opts, stack, state) do
+      :halt -> :ok
+      {:ok, new_stack, new_state} -> loop(opts, new_stack, new_state)
+    end
   end
 end
