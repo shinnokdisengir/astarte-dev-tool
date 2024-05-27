@@ -1,47 +1,59 @@
 defmodule AstarteDevTool do
   alias AstarteDevTool.Theme
 
+  @options %{
+    idle: [
+      {:up, "Up Astarte containers detached"},
+      {:down, "Down Astarte containers detached"},
+      {:shell, "Open shell"},
+      {:exit, "Exit"}
+    ],
+    up: [
+      {:device, "Device mode"},
+      {:shell, "Open shell"},
+      {:back, "Back main menu"}
+    ],
+    device: [
+      {:insert_device, "Insert device"},
+      {:remove_device, "Remove device"},
+      {:shell, "Open shell"},
+      {:back, "Back main menu"}
+    ]
+  }
+
   def main(args) do
     {opts, _, _} = OptionParser.parse(args, switches: [file: :string], aliases: [f: :file])
-    # here I just inspect the options to stdout
-    loop(opts)
+    loop(opts, [:idle])
     :ok
   end
 
-  defp loop(opts) do
-    prompt = """
-    Select option:
-    """
-
-    options = [
-      %{name: "shell", description: "shell"},
-      %{name: "exit", description: "exit tool"}
-    ]
-
-    selection =
-      Owl.IO.select(options,
-        render_as: fn %{name: name, description: description} ->
+  defp loop(opts, [current_state | _] = state) do
+    {name, _} =
+      Owl.IO.select(@options[current_state],
+        render_as: fn {name, description} ->
           [
-            Owl.Data.tag(name, Theme.color(:primary)),
-            # Owl.Data.tag(name, Theme.rgb_to_ansi(Theme.theme().primary)),
-            "\n  ",
+            name
+            |> Atom.to_string()
+            |> Owl.Data.tag(Theme.color(:primary)),
+            "\n\t",
             Owl.Data.tag(description, :light_black)
           ]
         end
       )
 
-    case selection do
-      %{name: "shell"} ->
-        Owl.IO.input() |> Owl.IO.puts()
-        loop(opts)
+    op(name, opts, state)
+  end
 
-      _ ->
-        :ok
-    end
+  defp op(:up, opts, state) do
+    # Do the docker up
+    loop(opts, [:up | state])
+  end
 
-    # IO.puts(Box.new(prompt, padding: 1))
-    # IO.select(["shell", "exit"])
-    # # IO.input()
-    # loop(opts)
+  defp op(:exit, _, _) do
+    :ok
+  end
+
+  defp op(:back, opts, [_ | state]) do
+    loop(opts, state)
   end
 end

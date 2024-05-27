@@ -24,7 +24,8 @@ defmodule AstarteDevTool.MixProject do
   defp deps do
     [
       {:owl, "~> 0.9"},
-      {:ucwidth, "~> 0.2"}
+      {:ucwidth, "~> 0.2"},
+      {:exandra, "~> 0.10.2"}
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
     ]
