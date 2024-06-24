@@ -1,6 +1,43 @@
 # AstarteDevTool
 
-**TODO: Add description**
+```mermaid
+---
+title: State diagram
+---
+stateDiagram-v2
+  direction TB
+  %% Definitions
+  state ConfigCheck <<choice>>
+  state UpCheck <<choice>>
+  classDef interrupt font-weight:bold,fill:white
+  %% Links
+  [*] --> ConfigCheck
+
+  ConfigCheck --> Break
+  ConfigCheck --> Config: Not configured yet
+  ConfigCheck --> UpCheck: Already configured
+  
+  UpCheck --> Break
+  UpCheck --> Idle: Env down
+  UpCheck --> Up: Env up
+
+  Config --> Break
+  Config --> Idle
+  
+  Idle --> Up
+  Idle --> Break
+  Idle --> [*]
+  
+  Up --> Interface
+  Up --> Device
+  Up --> [*]
+  Up --> Break
+  note right of Up
+      Astarte dev mode up & ready
+  end note
+
+  Break:::interrupt --> [*]
+```
 
 ## Installation
 

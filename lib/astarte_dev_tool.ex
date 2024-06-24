@@ -33,7 +33,7 @@ defmodule AstarteDevTool do
   end
 
   defp loop(opts, [position | _] = stack, state) do
-    Logger.warning("State: #{inspect(state)}")
+    Logger.info("State: #{inspect(state)}")
 
     {name, _} =
       Owl.IO.select(@options[position],

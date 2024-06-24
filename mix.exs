@@ -29,7 +29,11 @@ defmodule AstarteDevTool.MixProject do
     [
       {:owl, "~> 0.9"},
       {:ucwidth, "~> 0.2"},
-      {:exandra, "~> 0.10.2"}
+      {:exandra, "~> 0.10.2"},
+      {:astarte_import,
+       git: "https://github.com/astarte-platform/astarte.git",
+       sparse: "/tools/astarte_import",
+       tag: "v1.2.0-rc.0"}
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
     ]
