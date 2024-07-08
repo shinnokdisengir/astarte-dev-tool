@@ -8,11 +8,16 @@ defmodule AstarteDevTool.MixProject do
       elixir: "~> 1.15",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      escript: [
-        main_module: AstarteDevTool,
-        name: "astarte-dev-tool",
-        app: nil
-      ]
+      escript: escript_config()
+    ]
+  end
+
+  defp escript_config() do
+    [
+      main_module: AstarteDevTool.CLI,
+      name: "astarte-dev-tool",
+      # app: AstarteDevTool.App
+      app: nil
     ]
   end
 
@@ -20,7 +25,7 @@ defmodule AstarteDevTool.MixProject do
   def application do
     [
       extra_applications: [:logger],
-      mod: {AstarteDevTool.Application, []}
+      mod: {AstarteDevTool.CLI, []}
     ]
   end
 
@@ -28,6 +33,8 @@ defmodule AstarteDevTool.MixProject do
   defp deps do
     [
       {:owl, "~> 0.9"},
+      {:ratatouille, "~> 0.5.0"},
+      {:ex_termbox, "~> 1.0"},
       {:ucwidth, "~> 0.2"},
       {:exandra, "~> 0.10.2"},
       {:astarte_import,

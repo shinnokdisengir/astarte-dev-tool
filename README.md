@@ -28,13 +28,17 @@ stateDiagram-v2
   Idle --> Break
   Idle --> [*]
   
-  Up --> Interface
-  Up --> Device
+  Up --> Realm
   Up --> [*]
   Up --> Break
   note right of Up
       Astarte dev mode up & ready
   end note
+
+  Realm --> Interface
+  Realm --> Device
+  Realm --> Break
+  Realm --> [*]
 
   Break:::interrupt --> [*]
 ```
