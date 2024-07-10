@@ -16,16 +16,17 @@ defmodule AstarteDevTool.MixProject do
     [
       main_module: AstarteDevTool.CLI,
       name: "astarte-dev-tool",
-      # app: AstarteDevTool.App
       app: nil
+      # embed_elixir: true
     ]
   end
 
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
+      applications: [:ex_termbox, :ratatouille],
       extra_applications: [:logger],
-      mod: {AstarteDevTool.CLI, []}
+      mod: {AstarteDevTool.Application, []}
     ]
   end
 

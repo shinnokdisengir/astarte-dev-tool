@@ -1,4 +1,4 @@
-defmodule AstarteDevTool.App do
+defmodule AstarteDevTool.Main do
   @behaviour Ratatouille.App
 
   import Ratatouille.View
