@@ -10,6 +10,7 @@ defmodule Mix.Tasks.AstarteDevTool.System.Watch do
   ]
 
   @switches [
+    path: :string,
     log_level: :string
   ]
 
@@ -40,9 +41,10 @@ defmodule Mix.Tasks.AstarteDevTool.System.Watch do
       do: Logger.configure(level: String.to_existing_atom(log_level))
 
     with path <- opts[:path],
-         {:ok, abs_path} <- Path.normalize_path(path) do
-      Mix.shell().info("Entering Watch mode...")
-      Watch.exec(abs_path)
+         {:ok, abs_path} <- Path.normalize_path(path),
+         _ = Mix.shell().info("Entering Watch mode..."),
+         :ok <- Watch.exec(abs_path) do
+      :ok
     else
       {:error, output} ->
         Mix.raise("Failed to watch Astarte's system. Output: #{output}")

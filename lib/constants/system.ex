@@ -9,6 +9,7 @@ defmodule AstarteDevTool.Constants.System do
         "-f",
         "docker-compose.dev.yml",
         "up",
+        "--build",
         "--watch",
         "-d"
       ]
@@ -33,5 +34,3 @@ defmodule AstarteDevTool.Constants.System do
     end
   end
 end
-
-# AstarteDevTool.Utilities.Process.check_process("docker compose -f docker-compose.yml -f docker-compose.dev.yml watch", "/home/ghio/Documents/astarte")

@@ -6,11 +6,11 @@ defmodule AstarteDevTool.Utilities.Process do
   def check_process(command, path) when is_bitstring(command) and is_bitstring(path) do
     with {pids_str, 0} <- System.cmd("pgrep", ["-f", command]),
          pids when pids != [] <- String.split(String.trim(pids_str), "\n"),
-         {:ok, _pid} <- find_matching_pid(pids, path) do
-      :ok
+         {:ok, pid} <- find_matching_pid(pids, path) do
+      {:ok, pid}
     else
       {_, _} -> {:error, "Unable to find the process."}
-      [] -> {:error, "No matching process found."}
+      [] -> {:ok, nil}
       {:error, reason} -> {:error, reason}
     end
   end

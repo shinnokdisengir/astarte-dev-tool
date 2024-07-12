@@ -1,7 +1,6 @@
 defmodule AstarteDevTool.Commands.System.Up do
   @moduledoc false
   use AstarteDevTool.Constants.System
-  alias AstarteDevTool.Utilities.Process, as: AstarteProcess
 
   def exec(path) do
     with {_result, 0} <-
