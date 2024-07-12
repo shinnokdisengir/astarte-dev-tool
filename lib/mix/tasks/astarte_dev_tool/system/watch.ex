@@ -1,25 +1,24 @@
-defmodule Mix.Tasks.AstarteDevTool.System.Up do
+defmodule Mix.Tasks.AstarteDevTool.System.Watch do
   use Mix.Task
-  alias AstarteDevTool.Commands.System.Up
+  alias AstarteDevTool.Commands.System.Watch
   alias AstarteDevTool.Utilities.Path
 
-  @shortdoc "Up the local Astarte system"
+  @shortdoc "Attach watching mode to the up and running system"
 
   @aliases [
     p: :path
   ]
 
   @switches [
-    path: :string,
     log_level: :string
   ]
 
   @moduledoc """
-  Up the local Astarte system.
+  Attach watching mode to the up and running system.
 
   ## Examples
 
-      $ mix system.up -p /path/astarte
+      $ mix system.watch -p /path/astarte
 
   ## Command line options
     * `-p` `--path` - (required) working Astarte project directory
@@ -41,14 +40,12 @@ defmodule Mix.Tasks.AstarteDevTool.System.Up do
       do: Logger.configure(level: String.to_existing_atom(log_level))
 
     with path <- opts[:path],
-         {:ok, abs_path} <- Path.normalize_path(path),
-         _ = Mix.shell().info("Starting system in Watch mode..."),
-         :ok <- Up.exec(abs_path) do
-      Mix.shell().info("Astarte's system started successfully")
-      :ok
+         {:ok, abs_path} <- Path.normalize_path(path) do
+      Mix.shell().info("Entering Watch mode...")
+      Watch.exec(abs_path)
     else
       {:error, output} ->
-        Mix.raise("Failed to start Astarte's system. Output: #{output}")
+        Mix.raise("Failed to watch Astarte's system. Output: #{output}")
     end
   end
 end

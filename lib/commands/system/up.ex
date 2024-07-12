@@ -1,34 +1,15 @@
 defmodule AstarteDevTool.Commands.System.Up do
   @moduledoc false
-
-  defmacro __using__(_opts) do
-    quote do
-      @aliases [
-        p: :path
-      ]
-
-      @opts [
-        path: :string,
-        log_level: :string
-      ]
-    end
-  end
+  use AstarteDevTool.Constants.System
+  alias AstarteDevTool.Utilities.Process, as: AstarteProcess
 
   def exec(path) do
-    cmd_args = [
-      "compose",
-      "-f",
-      "docker-compose.yml",
-      "-f",
-      "docker-compose.dev.yml",
-      "up",
-      "--watch"
-    ]
-
-    with {output, 0} <- System.cmd("docker", cmd_args, into: IO.stream(:stdio, :line), cd: path) do
-      {:ok, {output, 0}}
+    with {_result, 0} <-
+           System.cmd(@command, @command_up_args, @options ++ [cd: path]) do
+      :ok
     else
-      result -> {:error, result}
+      {:process, _} -> {:error, "The system is already running"}
+      {result, exit_code} -> {:error, "Cannot exec system.up: #{result}, #{exit_code}"}
     end
   end
 end
